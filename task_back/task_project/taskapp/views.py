@@ -36,18 +36,24 @@ class Userauthentication(APIView):
     password = request.data.get("password")
     print(username,password)
     user = authenticate(request, username=username, password=password)
+    print(user)
     if user is not None:
         login(request, user)
         return Response('Login successfully')
- 
-        # Redirect to a success page.
-        ...
     else:
-        # Return an 'invalid login' error message.
-        ...
         return Response('not Login ')
  
-  
+class UserRegister(APIView):
+   def post(self,request):
+      username=request.data.get('username')
+      password=request.data.get('password')
+      user_name=User.objects.filter(username=username)
+      if user_name.exists():
+         return Response('username already exits')
+      user=User.objects.create(username=username)
+      user.set_password(password)
+      user.save()
+      return Response('user registered successfully')
 
       
 
