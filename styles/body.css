@@ -1,0 +1,17 @@
+.bodymain{
+    background-color: darkgray;
+    padding: 30px;
+    margin: 50px auto;
+    max-width: 600px;
+}
+.task_div{
+    display: flex;
+    gap: 30px;
+    margin-bottom: 5px;
+}
+@media screen and (max-width:400px) {
+    .task_div{
+        flex-wrap: wrap;
+    }
+    
+}
