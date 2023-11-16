@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Todo(models.Model):
     task=models.CharField(max_length=200)
-    status=models.CharField(max_length=200,choices=(('completed','completed'),('incomplete','incomplete')))
+    status=models.CharField(max_length=200,choices=(('completed','completed'),('incompleted','incompleted')))
     def __str__(self):
         return self.task
 

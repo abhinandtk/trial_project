@@ -20,13 +20,23 @@ def taskadd(request):
 class taskadd_two(APIView):
  serializer_class=Taskserializer
  def post(self,request):
-    task=request.data.get('task')
-    status=request.data.get('status')
-    queryset=self.serializer_class(data={'task':task,'status':status})
-    if queryset.is_valid():
-        queryset.save()
-        return Response({'message':'success','data':queryset.data})
-    return Response({'message':'error','errors':queryset.errors})
+    tasks=request.data
+    for i in tasks:
+        print('same',i.get('task'))
+        queryset=self.serializer_class(data={'task':i.get('task'),'status':i.get('status')})
+        if queryset.is_valid():
+            queryset.save()
+        else:
+            return Response({'message':'error','errors':queryset.errors})  
+    return Response({'message':'success'})
+ 
+class task_get(APIView):
+   serializer_class=Taskserializer
+   def get(self,request):
+      queryset=Todo.objects.all()
+      serializer=self.serializer_class(queryset,many=True)
+      print(queryset)
+      return Response({'message':'success','data':serializer.data})
  
 # request.user
 # user_id

@@ -3,9 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../styles/body.css";
 import { useState } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateState } from "@/Redux/task";
 
 function Mainbody() {
   const [state, setState] = useState([{ task: '', status: '' }]);
+  const dispatch=useDispatch()
 
   const inputChange = (event, index) => {
     const { value } = event.target;
@@ -31,6 +35,7 @@ function Mainbody() {
 
   }
   const submit=()=>{
+    dispatch(updateState(state))
    if (!state.every(value => value.status)) {
       // All tasks have status values, you can proceed with your logic
       console.log("some status have no  values");
@@ -40,8 +45,16 @@ function Mainbody() {
       // All tasks have status values, you can proceed with your logic
       console.log("some tasks have no values");
     }
+    axios.post('http://127.0.0.1:8000/taskadd_two',state).then((response)=>{
+      console.log(response);
+    }).catch((error)=>{
+      console.log(error);
+    })
   }
+
 console.log(state);
+
+
   return (
     <div className="bodymain">
       <Form>
@@ -70,10 +83,10 @@ console.log(state);
                 <Form.Check
                   type="radio"
                   name={`status${index}`}
-                  value="incomplete"
+                  value="incompleted"
                   onChange={(event) => inputcheck(event, index)}
                   label="incompleted"
-                  checked={value.status === "incomplete"}
+                  checked={value.status === "incompleted"}
                 />
               </div>
             </div>
