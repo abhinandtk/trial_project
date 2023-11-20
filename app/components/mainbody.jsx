@@ -2,7 +2,7 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import "../../styles/body.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateState } from "@/Redux/task";
@@ -34,8 +34,11 @@ function Mainbody() {
     setState(updatestate)
 
   }
-  const submit=()=>{
+  useEffect(()=>{
     dispatch(updateState(state))
+
+  },[state])
+  const submit=()=>{
    if (!state.every(value => value.status)) {
       // All tasks have status values, you can proceed with your logic
       console.log("some status have no  values");

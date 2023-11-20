@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from .models import Todo,User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 
 # Create your views here.
@@ -40,7 +42,7 @@ class task_get(APIView):
  
 # request.user
 # user_id
-class Userauthentication(APIView):
+class Userlogin(APIView):
    def post(self,request):
     username = request.data.get("username")
     password = request.data.get("password")
@@ -55,15 +57,24 @@ class Userauthentication(APIView):
  
 class UserRegister(APIView):
    def post(self,request):
+      first_name=request.data.get('first_name')
+      last_name=request.data.get('last_name')
       username=request.data.get('username')
       password=request.data.get('password')
+      email=request.data.get('email')
       user_name=User.objects.filter(username=username)
       if user_name.exists():
          return Response('username already exits')
-      user=User.objects.create(username=username)
-      user.set_password(password)
-      user.save()
-      return Response('user registered successfully')
-
-      
+      email_exits=User.objects.filter(email=email)
+      if email_exits.exists():
+         return Response('email already exits')
+      try: 
+        validate_email(email)
+        print('email')
+        user=User.objects.create(username=username,email=email,first_name=first_name,last_name=last_name)
+        user.set_password(password)
+        user.save()
+        return Response('user registered successfully')
+      except ValidationError as e:
+        return Response("email error")      
 

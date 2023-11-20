@@ -7,7 +7,6 @@ import { store } from "@/Redux/store";
 export default function Home() {
   return (
     <>
- <Navbars></Navbars>
     <main>
  <Mainbody></Mainbody>
  <Taskview></Taskview>
